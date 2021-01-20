@@ -12,6 +12,7 @@ There are three main groups of files.
 1. Exploration.ipynb is the notebook used to create
 2. main.py is the major algorithm part in Zipline. We may need to implement more method in this case
 3. src contains files to prepare data and generate report
+
 ## Dependencies
 In general, Zipline is a strong but relatively awkward framework. I would suggest
 you to set up two independent virtual environments. One to prepare data (Python > 3.8)
