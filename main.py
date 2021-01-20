@@ -75,16 +75,4 @@ def rebalance_portfolio(algo, data, desired_port):
         algo.order_target_percent(sid, desired_port[i])
 
 # Run algorithm
-# results = algo.run(data)
-# results.portfolio_value.iplot(filename='algo_perf', yTitle='Cumulative capital in $', world_readable=True,
 # zipline run -f main.py --start 2016-1-1 --end 2018-1-1 --capital-base 1000000 -o test_zipline.pickle --no-benchmark
-
-# the following code generate the full report
-# import pandas as pd
-# import pyfolio as pf
-# results = pd.read_pickle('test_zipline.pickle')
-# returns, positions, transactions = pf.utils.extract_rets_pos_txn_from_zipline(results)
-# pf.create_full_tear_sheet(returns, positions=positions, transactions=transactions,
-#                           round_trips=True)
-# import matplotlib
-# fig.savefig('returns_tear_sheet.pdf')
