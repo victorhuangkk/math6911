@@ -1,0 +1,5 @@
+numpy==1.19.5
+cvxopt==1.2.5.post1
+zipline==1.4.1
+yfinance==0.1.55
+pandas==0.20.3
