@@ -6,7 +6,7 @@ solvers.options['show_progress'] = False
 from zipline.api import order_target, record, symbol
 from zipline.finance import commission, slippage
 
-
+#'''
 def optimal_portfolio(returns):
     n = len(returns)
     returns = np.asmatrix(returns)
