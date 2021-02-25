@@ -1,14 +1,16 @@
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
-from app import app
+from sample_app.app import app
 import dash_bootstrap_components as dbc
 from datetime import date
 import dash_table
-import os.path
 import pandas as pd
 from newsapi import NewsApiClient
 import requests
+import os.path
+
+
 
 my_path = os.path.abspath(os.path.dirname(__file__))
 path = os.path.join(my_path, "dat/news_content.csv")

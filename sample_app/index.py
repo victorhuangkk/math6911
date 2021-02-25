@@ -4,13 +4,12 @@ This the controller page for the multiple page dash application
 Pages are under apps
 """
 
-import dash
 import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-from apps import app1, app2, app3, app4
-from app import app
+from sample_app.apps import app1, app2, app3, app4
+from sample_app.app import app
 
 # the style arguments for the sidebar. We use position:fixed and a fixed width
 SIDEBAR_STYLE = {
