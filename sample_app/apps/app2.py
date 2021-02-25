@@ -11,6 +11,8 @@ import numpy as np
 import chart_studio.plotly as py
 import matplotlib.pyplot as plt
 import plotly.graph_objs as go
+import cvxopt as opt
+from cvxopt import blas, solvers
 
 my_path = os.path.abspath(os.path.dirname(__file__))
 path = os.path.join(my_path, "dat/constituents_csv.csv")
@@ -90,28 +92,30 @@ def fetch_price(n_clicks, ticker_list, start_date, end_date):
     ])
     means = np.array(means).flatten()
     stds = np.array(stds).flatten()
+    weights, returns, risks = optimal_portfolio(return_vec)
 
+    # create plot
     fig = go.Figure()
 
     fig.add_trace(go.Scatter(
-                x=stds,
-                y=means,
-                mode='markers',
-                marker=dict(
-                    color=np.random.randn(len(means)),
-                    colorscale='Viridis',
-                    line_width=1
-                ),
-                name='Random', ))
+        x=stds,
+        y=means,
+        mode='markers',
+        marker=dict(
+            color=np.random.randn(len(means)),
+            colorscale='Viridis',
+            line_width=1
+        ),
+        name='Random', ))
+
+    fig.add_trace(go.Scatter(x=risks, y=returns,
+                         mode='lines+markers',
+                         name='lines+markers'))
+
+
+
     frontier_graph = [
-        dcc.Graph(figure={
-            'data': [fig],
-            'layout': {
-                'title': 'Efficient Frontiers',
-                'xaxis': {'title': 'Standard Deviation'},
-                'yaxis': {'title': 'Expected Return'},
-            }
-        })
+        dcc.Graph(figure=fig)
     ]
     return frontier_graph
 
@@ -138,3 +142,34 @@ def rand_weights(n):
     ''' Produces n random weights that sum to 1 '''
     k = np.random.rand(n)
     return k / sum(k)
+
+
+def optimal_portfolio(returns):
+    n = len(returns)
+    returns = np.asmatrix(returns)
+
+    N = 100
+    mus = [10 ** (5.0 * t / N - 1.0) for t in range(N)]
+
+    # Convert to cvxopt matrices
+    S = opt.matrix(np.cov(returns))
+    pbar = opt.matrix(np.mean(returns, axis=1))
+
+    # Create constraint matrices
+    G = -opt.matrix(np.eye(n))  # negative n x n identity matrix
+    h = opt.matrix(0.0, (n, 1))
+    A = opt.matrix(1.0, (1, n))
+    b = opt.matrix(1.0)
+
+    # Calculate efficient frontier weights using quadratic programming
+    portfolios = [solvers.qp(mu * S, -pbar, G, h, A, b)['x']
+                  for mu in mus]
+
+    returns = [blas.dot(pbar, x) for x in portfolios]
+    risks = [np.sqrt(blas.dot(x, S * x)) for x in portfolios]
+
+    m1 = np.polyfit(returns, risks, 2)
+    x1 = np.sqrt(m1[2] / m1[0])
+    # CALCULATE THE OPTIMAL PORTFOLIO
+    wt = solvers.qp(opt.matrix(x1 * S), -pbar, G, h, A, b)['x']
+    return np.asarray(wt), returns, risks
