@@ -1,18 +1,26 @@
+import os.path
+
+import dash_bootstrap_components as dbc
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output, State
-from sample_app.app import app
-import dash_bootstrap_components as dbc
-from datetime import date
 import dash_table
+import json
 import pandas as pd
-from newsapi import NewsApiClient
 import requests
-import os.path
+from dash.dependencies import Input, Output, State
+from newsapi import NewsApiClient
+
+from sample_app.app import app
 
 my_path = os.path.abspath(os.path.dirname(__file__))
 path = os.path.join(my_path, "dat/news_content.csv")
 record_df = pd.read_csv(path)
+
+# load api
+path = os.path.join(my_path, "dat/api_key.json")
+f = open(path)
+data = json.load(f)
+
 
 layout = html.Div(children=[
     dbc.Jumbotron(
@@ -83,8 +91,8 @@ layout = html.Div(children=[
 )
 def news_api_fetch(n_clicks, ticker, source):
     # you may add your own api key here
-    news_api_key = "f58fd8fdbe694b2cb1b865f86ccfa71d"
-    deepai_key = '4149406d-a702-4643-bfcc-8d148b9865c2'
+    news_api_key = data.get('news_api')
+    deepai_key = data.get('deepai_key')
 
     newsapi = NewsApiClient(api_key=news_api_key)
 
