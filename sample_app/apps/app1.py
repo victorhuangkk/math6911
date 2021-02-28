@@ -17,7 +17,7 @@ df = pd.read_csv(path)
 layout = html.Div(children=[
     dbc.Jumbotron(
         [
-            html.H2("Asset Exploration", className="display-1"),
+            html.H2("Market Data", className="display-1"),
             html.P(
                 "Compare multiple models' predictive power ",
                 className="lead",
@@ -87,8 +87,10 @@ def yahoo_data(ticker):
     information = tickerData.info
     interest_metrics = ['industry', 'marketCap', 'averageVolume', 'beta',
                         'pegRatio', 'priceToBook']
+    print(information)
     info_list = []
     for ind in interest_metrics:
+
         info_list.append(information.get(ind))
     plot_df = pd.DataFrame(info_list, index=interest_metrics).T
 

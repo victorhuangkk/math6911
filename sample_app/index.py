@@ -39,13 +39,13 @@ sidebar = html.Div(
         ),
         dbc.Nav(
             [
-                dbc.NavLink("Asset Exploration", href="/page-1", id="page-1-link"),
+                dbc.NavLink("Market Data", href="/page-1", id="page-1-link"),
                 html.Hr(),
                 dbc.NavLink("Portfolio Optimization", href="/page-2", id="page-2-link"),
                 html.Hr(),
-                dbc.NavLink("Deep Learning NLP", href="/page-3", id="page-3-link"),
-                html.Hr(),
-                dbc.NavLink("Neural Network Price Prediction", href="/page-4", id="page-4-link"),
+                dbc.NavLink("News Impact", href="/page-3", id="page-3-link"),
+                # html.Hr(),
+                # dbc.NavLink("Neural Network Price Prediction", href="/page-4", id="page-4-link"),
             ],
             vertical=True,
             pills=True,
@@ -80,8 +80,8 @@ def render_page_content(pathname):
         return app2.layout
     elif pathname == "/page-3":
         return app3.layout
-    elif pathname == "/page-4":
-        return app4.layout
+    # elif pathname == "/page-4":
+    #     return app4.layout
     # If the user tries to reach a different page, return a 404 message
     return dbc.Jumbotron(
         [

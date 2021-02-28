@@ -23,7 +23,7 @@ layout = html.Div(children=[
 
     dbc.Jumbotron(
         [
-            html.H2("Time Series Model", className="display-3"),
+            html.H2("Portfolio Optimization", className="display-3"),
             html.P(
                 "Compare multiple models' predictive power ",
                 className="lead",
@@ -43,7 +43,7 @@ layout = html.Div(children=[
                 html.Div(["Input: ",
                           dcc.Dropdown(id='page_2_stock_choice', options=[
                               {'label': item1, 'value': item1} for item1 in stock_list
-                          ], value='AMZN', multi=True, searchable=True)]), ]), ),
+                          ], value=['AMZN', 'AAPL', 'GOOG', 'FB'], multi=True, searchable=True)]), ]), ),
 
             dbc.Col(html.Div([
                 html.H6("Select the Date Range"),
@@ -85,6 +85,7 @@ def fetch_price(n_clicks, ticker_list, start_date, end_date):
         all_close[ticker] = tickerDf['Close'].pct_change().to_list()
 
     return_vec = pd.DataFrame(all_close).dropna().to_numpy()
+    print(return_vec[:10])
     n_portfolios = 2000
     means, stds = np.column_stack([
         random_portfolio(return_vec)
@@ -109,10 +110,10 @@ def fetch_price(n_clicks, ticker_list, start_date, end_date):
         name='Random', ))
 
     fig.add_trace(go.Scatter(x=risks, y=returns,
-                         mode='lines+markers',
-                         name='lines+markers'))
+                             mode='lines+markers',
+                             name='efficient-frontier'))
 
-
+    fig.update_layout(title='Markowitz Portfolio Efficient Frontier',)
 
     frontier_graph = [
         dcc.Graph(figure=fig)

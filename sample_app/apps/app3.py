@@ -10,8 +10,6 @@ from newsapi import NewsApiClient
 import requests
 import os.path
 
-
-
 my_path = os.path.abspath(os.path.dirname(__file__))
 path = os.path.join(my_path, "dat/news_content.csv")
 record_df = pd.read_csv(path)
@@ -19,7 +17,7 @@ record_df = pd.read_csv(path)
 layout = html.Div(children=[
     dbc.Jumbotron(
         [
-            html.H2("Stock News", className="display-3"),
+            html.H2("News Impact", className="display-3"),
             html.P(
                 "We would use neural network backed transformer model for embedding and RNN for prediction",
                 className="lead",
@@ -76,7 +74,7 @@ layout = html.Div(children=[
 
 ]
 )
-'''
+
 @app.callback(
     Output("news_data_fetch", "data"),
     Input('page_3_submit_1', 'n_clicks'),
@@ -121,6 +119,3 @@ def sentiment_analysis(text, deepai_key):
         headers={'api-key': deepai_key}
     )
     return r.json().get('output')[0]
-
-'''
-
