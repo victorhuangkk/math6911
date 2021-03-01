@@ -102,12 +102,23 @@ def yahoo_data(ticker):
 
     information = tickerData.info
     interest_metrics = df.columns.values
-    info_list = [information.get('industry'), np.round(information.get('marketCap') / 1000000, 3),
-                 np.round(information.get('averageVolume') / 1000000, 3), np.round(information.get('trailingPE'), 2),
-                 np.round(information.get('forwardPE'), 2), np.round(information.get('trailingEps'), 2),
-                 np.round(information.get('forwardEps'), 2), np.round(information.get('pegRatio'), 2),
-                 np.round(information.get('beta'), 2)]
-    print(info_list)
+    info_list = [information.get('industry')]
+    try:
+        info_list.append(np.round(information.get('marketCap') / 1000000, 3))
+    except:
+        info_list.append("None")
+    try:
+        info_list.append(np.round(information.get('averageVolume') / 1000000, 3))
+    except:
+        info_list.append("None")
+
+    for ind_ in ['trailingPE', 'forwardPE', 'trailingEps',
+                 'forwardEps', 'pegRatio', 'beta']:
+        try:
+            info_list.append(np.round(information.get(ind_), 2),)
+        except:
+            info_list.append("None")
+
     plot_df = pd.DataFrame(info_list, index=interest_metrics).T
 
     return fig, plot_df.to_dict('records')
